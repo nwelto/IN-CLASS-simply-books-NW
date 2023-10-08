@@ -5,18 +5,17 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
-import { getAuthors } from '../../api/authorData';
-import { createBook, updateBook } from '../../api/bookData';
+import { createAuthor, updateAuthor, getAuthors } from '../../api/authorData';
 
 const initialState = {
-  description: '',
+  first_name: '',
+  last_name_name: '',
   image: '',
-  price: '',
-  sale: false,
-  title: '',
+  email: '',
+  favorite: false,
 };
 
-function BookForm({ obj }) {
+function AuthorForm({ obj }) {
   const [formInput, setFormInput] = useState(initialState);
   const [authors, setAuthors] = useState([]);
   const router = useRouter();
@@ -39,12 +38,12 @@ function BookForm({ obj }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.firebaseKey) {
-      updateBook(formInput).then(() => router.push(`/book/${obj.firebaseKey}`));
+      updateAuthor(formInput).then(() => router.push(`/book/${obj.firebaseKey}`));
     } else {
       const payload = { ...formInput, uid: user.uid };
-      createBook(payload).then(({ name }) => {
+      createAuthor(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
-        updateBook(patchPayload).then(() => {
+        updateAuthor(patchPayload).then(() => {
           router.push('/');
         });
       });
@@ -132,9 +131,9 @@ function BookForm({ obj }) {
       <Form.Check
         className="text-white mb-3"
         type="switch"
-        id="sale"
-        name="sale"
-        label="On Sale?"
+        id="favorite"
+        name="Favorite"
+        label="Favorite?"
         checked={formInput.sale}
         onChange={(e) => {
           setFormInput((prevState) => ({
@@ -145,12 +144,12 @@ function BookForm({ obj }) {
       />
 
       {/* SUBMIT BUTTON  */}
-      <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Book</Button>
+      <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Author</Button>
     </Form>
   );
 }
 
-BookForm.propTypes = {
+AuthorForm.propTypes = {
   obj: PropTypes.shape({
     description: PropTypes.string,
     image: PropTypes.string,
@@ -162,8 +161,8 @@ BookForm.propTypes = {
   }),
 };
 
-BookForm.defaultProps = {
+AuthorForm.defaultProps = {
   obj: initialState,
 };
 
-export default BookForm;
+export default AuthorForm;
