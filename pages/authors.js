@@ -5,7 +5,7 @@ import { useAuth } from '../utils/context/authContext';
 import { getAuthors } from '../api/authorData';
 import AuthorCard from '../components/AuthorCard';
 
-function ShowAuthors() {
+function ViewAuthors() {
   // TODO: Set a state for authors
   const [authors, setAuthors] = useState([]);
 
@@ -38,4 +38,4 @@ function ShowAuthors() {
   );
 }
 
-export default ShowAuthors;
+export default ViewAuthors;
